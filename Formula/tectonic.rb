@@ -1,9 +1,10 @@
 class Tectonic < Formula
   desc "Modernized, complete, self-contained TeX/LaTeX engine"
   homepage "https://tectonic-typesetting.github.io/"
-  url "https://github.com/tectonic-typesetting/tectonic/archive/tectonic@0.13.1.tar.gz"
-  sha256 "bc16c2d7c85b646f5d168371a6cf1f2c219d8fcdcc919addcc9d74ce0cfbd442"
+  url "https://github.com/tectonic-typesetting/tectonic/archive/tectonic@0.14.1.tar.gz"
+  sha256 "3703a4fc768b3c7be6a4560857b17b2671f19023faee414aa7b6befd24ec9d25"
   license "MIT"
+  revision 1
   head "https://github.com/tectonic-typesetting/tectonic.git", branch: "master"
 
   # As of writing, only the tags starting with `tectonic@` are release versions.
@@ -15,13 +16,13 @@ class Tectonic < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_ventura:  "59233a41111742006cfe217decf8e6a9dcb04415d11f17062846cbb5d876b75b"
-    sha256 cellar: :any,                 arm64_monterey: "1c6fb3dd606311cfa6efa570d4cd0480da8a44bb03072726f9c08cf08a3e128b"
-    sha256 cellar: :any,                 arm64_big_sur:  "09c0185594df40590aa731e8983d2c1edacabc65a16135d0007cfaf6a4fe5f1e"
-    sha256 cellar: :any,                 ventura:        "914e98a0119c5b3d35984021f87f36be0d4fae7a10a81f32ae530bfe2691531c"
-    sha256 cellar: :any,                 monterey:       "ab203a09e142994f396bdfececa4c14ee2bd7563028b8432d3e24f8fcf566cc1"
-    sha256 cellar: :any,                 big_sur:        "c25b82f042ab984e6ad20ce183166203f375e1ee8fb31488f0f876d4490be2cf"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d4f5669288baaa9f87a589a2c60925072571bf9c87bba70a812a4a5be821e5c4"
+    sha256 cellar: :any,                 arm64_ventura:  "2f3f2d11a4ce369f5c6b501b3504edcddc0f821c44bc52e2bb829ff2238d6be3"
+    sha256 cellar: :any,                 arm64_monterey: "8363c83668e45340ebaa2924a08c5cddda6dc7578b1f699c1194176bead1bf99"
+    sha256 cellar: :any,                 arm64_big_sur:  "95220f51c7530b2bf11a79c156a5aa5e0ba16e8b832d7e1cffff8de84d15d841"
+    sha256 cellar: :any,                 ventura:        "861d45e1adf751c77a6d3e5a85e5d86d4286d4cac099edf82c40188bc8a9cced"
+    sha256 cellar: :any,                 monterey:       "f8352b2bd8cc27ebeece409a3b9ca8fddd5cccf58ff4b70f5cc1756140c868c0"
+    sha256 cellar: :any,                 big_sur:        "942034cafee1729c67a38e9c94b6b2cff546c4c59fa305d2d255c809f9986d4e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "efa398c246fba43bab1b9fcf46a975e43149b9c84674d9049a765b33c3257823"
   end
 
   depends_on "pkg-config" => :build

@@ -2,24 +2,30 @@ class PerconaXtrabackup < Formula
   desc "Open source hot backup tool for InnoDB and XtraDB databases"
   homepage "https://www.percona.com/software/mysql-database/percona-xtrabackup"
   # TODO: Check if we can use unversioned `protobuf` at version bump
-  url "https://downloads.percona.com/downloads/Percona-XtraBackup-LATEST/Percona-XtraBackup-8.0.32-26/source/tarball/percona-xtrabackup-8.0.32-26.tar.gz"
-  sha256 "2a1c23497ffd5905d6dc20bdb5a801d1b8baeb3245ec11ed115dee0d78b7a5e2"
+  url "https://downloads.percona.com/downloads/Percona-XtraBackup-LATEST/Percona-XtraBackup-8.0.33-27/source/tarball/percona-xtrabackup-8.0.33-27.tar.gz"
+  sha256 "64b3b0ecaab5a5ee50af02ec40f12664bfe4c94f929ff0c189705ae886da0b12"
   license "GPL-2.0-only"
-  revision 1
 
   livecheck do
-    url "https://www.percona.com/downloads/Percona-XtraBackup-LATEST/"
-    regex(/value=.*?Percona-XtraBackup[._-]v?(\d+(?:\.\d+)+-\d+)["' >]/i)
+    url "https://docs.percona.com/percona-xtrabackup/latest/"
+    regex(/href=.*?v?(\d+(?:[.-]\d+)+)\.html/i)
+    strategy :page_match do |page, regex|
+      page.scan(regex).map do |match|
+        # Convert a version like 1.2.3-4.0 to 1.2.3-4 (but leave a version like
+        # 1.2.3-4.5 as-is).
+        match[0].sub(/(-\d+)\.0$/, '\1')
+      end
+    end
   end
 
   bottle do
-    sha256 arm64_ventura:  "773fe388c6889bd73c9bc9e4f1d7412ecc5275e8be206784e8516fa840852d8a"
-    sha256 arm64_monterey: "a08039d4a3e0c5ea1ae17b23769f8e2ead1798669fd8fff1b91e4356f11297bb"
-    sha256 arm64_big_sur:  "3638453f0c6cedec4953ab325480f15805b215c2bfddf3a3c7d0ca5facb90a60"
-    sha256 ventura:        "4a12748dbff1f7766d5ab717384961b35a1580307dda71ac1853187a349a299c"
-    sha256 monterey:       "0466a6a332683d146a316a174dd21dbcde2c657eefe8bc30e3c5ef03d9b4d3a0"
-    sha256 big_sur:        "826b289bdc606752354383079e7664f97134928693d35d9f2919a039c621d466"
-    sha256 x86_64_linux:   "29af2876a9ec091f4e03fb045b12cfb23647a5d50d8546c56cb4dbd1fa7f43af"
+    sha256 arm64_ventura:  "a9ab6bb9546c58c1183507c1fbf72c92d467bdfb8f92de3b71572ef65b3690ef"
+    sha256 arm64_monterey: "e16e58439c285b6ab010bfbcaedc21758050b4387379d846d8895ef74768efa1"
+    sha256 arm64_big_sur:  "df4f8b720f7c19fd65b82aa18d07f03cb32ce34ec3f07f17e5175c5a1c1d6efe"
+    sha256 ventura:        "8162482dc5e6429febbc902933eb9317af576ff6d618fdb28c16f2b7f46d4f18"
+    sha256 monterey:       "c9970fccd57427a12f8fdf540574ce2f7ee3584754c818e81a0343ebf2f6761a"
+    sha256 big_sur:        "9a3a49b67e5ad6809e8c8d127892f8e750529bb0369e5576b91ec450e726f242"
+    sha256 x86_64_linux:   "c18f432456cf0da03d67a63cea959fe267e1b6c64a468b1d6d3dc40047c74508"
   end
 
   depends_on "cmake" => :build
@@ -59,8 +65,8 @@ class PerconaXtrabackup < Formula
 
   # Should be installed before DBD::mysql
   resource "Devel::CheckLib" do
-    url "https://cpan.metacpan.org/authors/id/M/MA/MATTN/Devel-CheckLib-1.14.tar.gz"
-    sha256 "f21c5e299ad3ce0fdc0cb0f41378dca85a70e8d6c9a7599f0e56a957200ec294"
+    url "https://cpan.metacpan.org/authors/id/M/MA/MATTN/Devel-CheckLib-1.16.tar.gz"
+    sha256 "869d38c258e646dcef676609f0dd7ca90f085f56cf6fd7001b019a5d5b831fca"
   end
 
   # This is not part of the system Perl on Linux and on macOS since Mojave
@@ -87,6 +93,14 @@ class PerconaXtrabackup < Formula
   patch do
     url "https://raw.githubusercontent.com/Homebrew/formula-patches/030f7433e89376ffcff836bb68b3903ab90f9cdc/mysql/boost-check.patch"
     sha256 "af27e4b82c84f958f91404a9661e999ccd1742f57853978d8baec2f993b51153"
+  end
+
+  # Fix for "Cannot find system zlib libraries" even though they are installed.
+  # https://bugs.mysql.com/bug.php?id=110745
+  # https://bugs.mysql.com/bug.php?id=111467
+  patch do
+    url "https://bugs.mysql.com/file.php?id=32361&bug_id=111467"
+    sha256 "3fe1ebb619583fc1778b249042184ef48a4f85555c573fb3618697cf024d19cc"
   end
 
   def install

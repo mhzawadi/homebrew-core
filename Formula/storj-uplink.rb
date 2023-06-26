@@ -1,8 +1,8 @@
 class StorjUplink < Formula
   desc "Uplink CLI for the Storj network"
   homepage "https://storj.io"
-  url "https://github.com/storj/storj/archive/refs/tags/v1.78.3.tar.gz"
-  sha256 "d2a1f2d41e21ea331f3c82d2491864a205ac4f2d56cfcd43af072da13a8b698c"
+  url "https://github.com/storj/storj/archive/refs/tags/v1.80.10.tar.gz"
+  sha256 "5ffbb768f5e4cf35d2e3ff0668ad22f4139f2d42ab48df525aebe9d9c6e6f20a"
   license "AGPL-3.0-only"
 
   livecheck do
@@ -11,13 +11,13 @@ class StorjUplink < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "7f1d39ac67e3eaccdac620a1da62cb80de4953a8c9041ed03100619efa1f0b83"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "9482c97d9a285b2eb55043cb06ec8459bf71c157e391fa765f0c473f4a567fd4"
-    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "868ca229a1aa91d072007af3bbcd0527fc85cffa6506e32d1678acc5ba89e8eb"
-    sha256 cellar: :any_skip_relocation, ventura:        "a2324f95529fab65ae4739b40307f41b654429fc82a5860c93422abae7c77496"
-    sha256 cellar: :any_skip_relocation, monterey:       "65f86b196e6cccc17d3d19f3fd74432765c528801013717982f76eb7f1d67676"
-    sha256 cellar: :any_skip_relocation, big_sur:        "8fd045be12c953294fdbe8fd77c98ada252cd8322595761a2e27eed46ed581f2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "59b47335d06151dd02d449350779abded2b9424acaf208eb7ec0231516546612"
+    sha256 cellar: :any_skip_relocation, arm64_ventura:  "f0ce5ef25740c7257b7283b51e004d96d7c68108c457c11a0866e8957c5340a9"
+    sha256 cellar: :any_skip_relocation, arm64_monterey: "f22cae650885609e4421fd567a43594ddcd2a80d5bd0850d8ca43eb2277eb353"
+    sha256 cellar: :any_skip_relocation, arm64_big_sur:  "99a188bcc1506d68172c9f6073607d6e169f7b6dad54744e1a3dbf0c6a3d21de"
+    sha256 cellar: :any_skip_relocation, ventura:        "a1509758d1a383af1e97502b5c15eec07b3da260f3df7ab3f8f47e0bc81ba339"
+    sha256 cellar: :any_skip_relocation, monterey:       "3e767fbea03ba42ae1b43b744a37647b153c076be1853d5839592fcf91e5ba67"
+    sha256 cellar: :any_skip_relocation, big_sur:        "12ad62347e60ea0dddb1f8477920c8ee3bea688bee6d24b738d4829b123b5c44"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:   "d46e6c2ab427342314c2393a5a8024d13bd752954cb08c234ad2f3380899cdb1"
   end
 
   # Support for go 1.20 is merged upstream but not yet landed in a tag:

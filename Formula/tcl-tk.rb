@@ -5,7 +5,7 @@ class TclTk < Formula
   mirror "https://fossies.org/linux/misc/tcl8.6.13-src.tar.gz"
   sha256 "43a1fae7412f61ff11de2cfd05d28cfc3a73762f354a417c62370a54e2caf066"
   license "TCL"
-  revision 2
+  revision 3
 
   livecheck do
     url :stable
@@ -13,13 +13,14 @@ class TclTk < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "cfaaa962201282d27868ef10154b58b0da1e384c51dd5840f8aacb39494bfdfd"
-    sha256 arm64_monterey: "09869232f5179bc2e091975bdd50236bd9380ed951f6f106f1cd567614877b6b"
-    sha256 arm64_big_sur:  "3ad8857935360e19938383c3e79279165a776d91228b3d6671819b44c80affc3"
-    sha256 ventura:        "be57540682f3a049112b387673e10f0224b8b9be5d79441de5c5f532a6155610"
-    sha256 monterey:       "9d7f1d99f291bc333831b92751aee8dc3b36bc7d3c2d45af6615a50271adc64b"
-    sha256 big_sur:        "46ecb4df42daa830fcf8ba0f89b7a629a88c31a8e8506fefd5dfe437408ac641"
-    sha256 x86_64_linux:   "203cb94d30f94b19e6ca47beca843e83c31c0f07c87847c842b5cab6e85bab37"
+    rebuild 1
+    sha256 arm64_ventura:  "f40d605c127e7a7895cd2b1506ef1ac0e59e6f8ad671a7f4e802c4726ef21595"
+    sha256 arm64_monterey: "11aec0c476a122789baf08f760224055b39478392d8f6d0ca6e38f4710ef48fa"
+    sha256 arm64_big_sur:  "2797baea8eabe4fa73fca4992f7506fc48882842d250b24622f1fe8eb6049613"
+    sha256 ventura:        "15cade8287fb43f440cbd2de43b49942034bb75104180add1768baa155e3f6b1"
+    sha256 monterey:       "24d780810fc9c75c78993418cf864c5d2591ea40512be0975f7f4ade8a3c4dc6"
+    sha256 big_sur:        "cdd86c3d4ba95617c09d39791dc48cf2c33885f4e6a36b6936298bc362b3f78d"
+    sha256 x86_64_linux:   "2dc6ae424056b9bcc423c8be83c0115df96cd0aa85d3bc45b82196136e1a57f4"
   end
 
   depends_on "openssl@1.1"
@@ -54,6 +55,13 @@ class TclTk < Formula
     url "https://downloads.sourceforge.net/project/tcl/Tcl/8.6.13/tk8.6.13-src.tar.gz"
     mirror "https://fossies.org/linux/misc/tk8.6.13-src.tar.gz"
     sha256 "2e65fa069a23365440a3c56c556b8673b5e32a283800d8d9b257e3f584ce0675"
+
+    # Bugfix for ttk::ThemeChanged errors; will be in Tk 8.6.14
+    # See https://core.tcl-lang.org/tk/info/310c74ecf4
+    patch :p0 do
+      url "https://raw.githubusercontent.com/macports/macports-ports/db4f8f774193/x11/tk/files/fix-themechanged-error.patch"
+      sha256 "2a75496dc597dec9d25401ab002f290be74d4acd5566793c5114e75a154c280a"
+    end
   end
 
   resource "itk4" do
@@ -119,7 +127,9 @@ class TclTk < Formula
         --prefix=#{prefix}
         --exec-prefix=#{prefix}
         --with-tcl=#{lib}
+        --with-tclinclude=#{include}/tcl-tk
         --with-tk=#{lib}
+        --with-tkinclude=#{include}/tcl-tk
         --with-itcl=#{itcl_dir}
       ]
       system "./configure", *args
@@ -127,8 +137,8 @@ class TclTk < Formula
       system "make", "install"
     end
 
-    # Conflicts with perl
-    mv man/"man3/Thread.3", man/"man3/ThreadTclTk.3"
+    # Rename all section 3 man pages in the Debian/Ubuntu style, to avoid conflicts
+    man3.glob("*.3") { |file| file.rename("#{file}tcl") }
 
     # Use the sqlite-analyzer formula instead
     # https://github.com/Homebrew/homebrew-core/pull/82698

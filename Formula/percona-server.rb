@@ -2,24 +2,30 @@ class PerconaServer < Formula
   desc "Drop-in MySQL replacement"
   homepage "https://www.percona.com"
   # TODO: Check if we can use unversioned `protobuf` at version bump
-  url "https://downloads.percona.com/downloads/Percona-Server-8.0/Percona-Server-8.0.32-24/source/tarball/percona-server-8.0.32-24.tar.gz"
-  sha256 "2867706e914597cb3a5161751573c5463caf8343684ed7eeafcad1eb8f2d081e"
+  url "https://downloads.percona.com/downloads/Percona-Server-8.0/Percona-Server-8.0.33-25/source/tarball/percona-server-8.0.33-25.tar.gz"
+  sha256 "9871cac20c226bba7607f35c19ee23516a38c67573dd48618727c74eae22912e"
   license "BSD-3-Clause"
-  revision 1
 
   livecheck do
-    url "https://www.percona.com/downloads/Percona-Server-LATEST/"
-    regex(/value=.*?Percona-Server[._-]v?(\d+(?:\.\d+)+-\d+)["' >]/i)
+    url "https://docs.percona.com/percona-server/latest/"
+    regex(/href=.*?v?(\d+(?:[.-]\d+)+)\.html/i)
+    strategy :page_match do |page, regex|
+      page.scan(regex).map do |match|
+        # Convert a version like 1.2.3-4.0 to 1.2.3-4 (but leave a version like
+        # 1.2.3-4.5 as-is).
+        match[0].sub(/(-\d+)\.0$/, '\1')
+      end
+    end
   end
 
   bottle do
-    sha256 arm64_ventura:  "a921bfbdeaaa0097c32a57dc5f49a694cd343365e18b68fe83589eb03c7c0188"
-    sha256 arm64_monterey: "b93ade94d601edb0a5e9e24277abf2e156925746475f48500541909256ae773f"
-    sha256 arm64_big_sur:  "1f10e90e616d9100a5a4e8f2cf9bc61180e01f5bcaea2fa51e187c9609071891"
-    sha256 ventura:        "2a77772db022cf314e9ecf0c44dbe9bb3c9ae8039c2082dc27d966462b333145"
-    sha256 monterey:       "d4731c7e181d23049b9420a428af96d90e81100942b75e8d554b790d970fbb29"
-    sha256 big_sur:        "137193691364e3a6a623e438134868c9943ac81d88572a201f90bd3068d8b4a9"
-    sha256 x86_64_linux:   "eabc7ec42e913019e8fcf991f0ec941c4307e24a6065503646fa700169c52030"
+    sha256 arm64_ventura:  "cf23527d136b38e055d6b219ae2c11fa6ace99e93d1e8e63172f2bd671ea1248"
+    sha256 arm64_monterey: "8d654c1513e0ad5341e4de168fd1ac805bb6b51a992cec8d1d88632a77897983"
+    sha256 arm64_big_sur:  "e32b0ff622efb8c60da1e8b8d2bb31fbaf248a651907b9c69d8a5e893d08cb84"
+    sha256 ventura:        "46d41c501e1c4535ceadea2ec414611beda971ad7ecff29e6961e0a91093513b"
+    sha256 monterey:       "04f90d54e23d99a2e18fe468afc773ed364f0cde9732f7252c1143ba15ef3479"
+    sha256 big_sur:        "82dc310288cc08ee94e81ca80db3d9f39612d1d376af5361875b11cc077210ed"
+    sha256 x86_64_linux:   "e59c81d80747d37bc6e0b7248e656e7885de9cb52b0d599872be443b4c2e2481"
   end
 
   depends_on "cmake" => :build
@@ -71,6 +77,14 @@ class PerconaServer < Formula
   patch do
     url "https://raw.githubusercontent.com/Homebrew/formula-patches/030f7433e89376ffcff836bb68b3903ab90f9cdc/mysql/boost-check.patch"
     sha256 "af27e4b82c84f958f91404a9661e999ccd1742f57853978d8baec2f993b51153"
+  end
+
+  # Fix for "Cannot find system zlib libraries" even though they are installed.
+  # https://bugs.mysql.com/bug.php?id=110745
+  # https://bugs.mysql.com/bug.php?id=111467
+  patch do
+    url "https://bugs.mysql.com/file.php?id=32361&bug_id=111467"
+    sha256 "3fe1ebb619583fc1778b249042184ef48a4f85555c573fb3618697cf024d19cc"
   end
 
   def install

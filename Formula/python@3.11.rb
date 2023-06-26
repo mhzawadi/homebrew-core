@@ -1,8 +1,8 @@
 class PythonAT311 < Formula
   desc "Interpreted, interactive, object-oriented programming language"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.11.3/Python-3.11.3.tgz"
-  sha256 "1a79f3df32265d9e6625f1a0b31c28eb1594df911403d11f3320ee1da1b3e048"
+  url "https://www.python.org/ftp/python/3.11.4/Python-3.11.4.tgz"
+  sha256 "85c37a265e5c9dd9f75b35f954e31fbfc10383162417285e30ad25cc073a0d63"
   license "Python-2.0"
 
   livecheck do
@@ -11,13 +11,14 @@ class PythonAT311 < Formula
   end
 
   bottle do
-    sha256 arm64_ventura:  "a6f7dd653b6c5904629effbfff359da0aa9903786b38abc0840c595e281a278e"
-    sha256 arm64_monterey: "270d1f7c56978757922b246dfd8bccead979c3d30a8e95d77a7b7b644050e6cd"
-    sha256 arm64_big_sur:  "13a7123b4e99f4bd574ec38e0a48d80ae6bbc36527cf9e158679f045d21160f4"
-    sha256 ventura:        "59844694b2bb56614623c8ede1679689fa32e8becf296108716de31ff3db6807"
-    sha256 monterey:       "e86210ffc0380bf4ccff3e3081e4dbd9c9ee3c2f72574d41498a817050f1ef86"
-    sha256 big_sur:        "af625209f6474e67aa4cc911c972425631d4e7ef343235b25bdf8ef11b761303"
-    sha256 x86_64_linux:   "e2df7e7b96ec43663841c3dfc8bc28d15087d39be147fde3d0dd1ba564be7a95"
+    rebuild 1
+    sha256 arm64_ventura:  "ae4c32c3a4924c93133e31d3810b5a8e992514775c6e91627e304f82b9fa906b"
+    sha256 arm64_monterey: "6b43a8c74163708763efcf82b5ab8b0b861ca4516fae553844a3b33b882c8e98"
+    sha256 arm64_big_sur:  "384efe1b5f7ed58db69474b348acf9498a9fb98c7ffcd8b2dec35bb6f6844066"
+    sha256 ventura:        "27087690b1bdba89fc6964e2a92114d3686c7ebbd27f54d28658cffe4bb68bf1"
+    sha256 monterey:       "a53646ef5aa8abe465816c6fcd94bf69ab25244bfbbdd6ab9fdcdb5cb98dc56e"
+    sha256 big_sur:        "95ee1128b98323564dd0da10f8a1eca98b01658c97c36b4478bb8d146e6e2d6f"
+    sha256 x86_64_linux:   "31766d795cb6367043455f431e9975c3b4ababc86ac5026807d0e562533ad82a"
   end
 
   # setuptools remembers the build flags python is built with and uses them to
@@ -445,7 +446,7 @@ class PythonAT311 < Formula
           if os.path.realpath(sys.base_exec_prefix).startswith('#{rack}'):
               new_exec_prefix = cellar_prefix.sub('#{opt_prefix}/', sys.base_exec_prefix)
               if sys.exec_prefix == sys.base_exec_prefix:
-                  site.PREFIXES[:] = [new_prefix if x == sys.exec_prefix else x for x in site.PREFIXES]
+                  site.PREFIXES[:] = [new_exec_prefix if x == sys.exec_prefix else x for x in site.PREFIXES]
                   sys.exec_prefix = new_exec_prefix
               sys.base_exec_prefix = new_exec_prefix
       # Check for and add the prefix of split Python formulae.
